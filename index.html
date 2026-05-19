@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tanmay Upadhyay | Full Stack Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d14;
+      --surface: #13131f;
+      --card: #1a1a2e;
+      --border: #2a2a40;
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --cyan: #06b6d4;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --faint: #64748b;
+      --radius: 12px;
+      --font: 'Inter', sans-serif;
+      --mono: 'Fira Code', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+    /* ── Navbar ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(13,13,20,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-size: 1.3rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      font-family: var(--mono);
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--primary-light); }
+    .nav-cta {
+      background: var(--primary); color: #fff;
+      padding: 0.45rem 1.1rem; border-radius: 8px;
+      text-decoration: none; font-size: 0.875rem; font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: 0.3s; }
+
+    /* ── Hero ── */
+    #home {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 100px 10% 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99,102,241,0.12) 0%, transparent 70%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--mono); font-size: 0.85rem;
+      color: var(--cyan); background: rgba(6,182,212,0.1);
+      border: 1px solid rgba(6,182,212,0.25);
+      padding: 0.3rem 0.9rem; border-radius: 20px; margin-bottom: 1.5rem;
+    }
+    .hero-name {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800; line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .hero-name span {
+      background: linear-gradient(135deg, var(--primary-light), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-type {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--muted); font-weight: 400; margin-bottom: 1.5rem;
+      min-height: 2rem;
+    }
+    .cursor {
+      display: inline-block; width: 2px; height: 1.2em;
+      background: var(--primary); margin-left: 2px;
+      vertical-align: middle; animation: blink 0.9s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero-desc {
+      color: var(--muted); font-size: 1rem; max-width: 540px;
+      margin-bottom: 2.5rem; line-height: 1.8;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: #fff; padding: 0.75rem 1.8rem;
+      border-radius: 10px; text-decoration: none;
+      font-weight: 600; font-size: 0.95rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(99,102,241,0.45); }
+    .btn-secondary {
+      border: 1px solid var(--border); color: var(--text);
+      padding: 0.75rem 1.8rem; border-radius: 10px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--primary); background: rgba(99,102,241,0.08); }
+    .hero-socials { display: flex; gap: 1rem; }
+    .social-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); text-decoration: none; font-size: 1rem;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .social-icon:hover { color: var(--primary-light); border-color: var(--primary); background: rgba(99,102,241,0.08); }
+    .hero-stats {
+      position: absolute; right: 10%; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 1.2rem; z-index: 1;
+    }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem 1.5rem;
+      text-align: center; min-width: 130px;
+      transition: border-color 0.3s;
+    }
+    .stat-card:hover { border-color: var(--primary); }
+    .stat-number {
+      font-size: 1.8rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-light), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 0.75rem; color: var(--faint); margin-top: 0.2rem; }
+
+    /* ── Section base ── */
+    section { padding: 90px 10%; }
+    .section-tag {
+      font-family: var(--mono); font-size: 0.8rem;
+      color: var(--cyan); letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800; margin-bottom: 1rem;
+    }
+    .section-title span {
+      background: linear-gradient(135deg, var(--primary-light), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .section-line {
+      width: 50px; height: 3px; margin-bottom: 3rem;
+      background: linear-gradient(90deg, var(--primary), var(--cyan));
+      border-radius: 2px;
+    }
+
+    /* ── About ── */
+    #about { background: var(--surface); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; align-items: center; }
+    .about-avatar {
+      width: 100%; aspect-ratio: 1;
+      background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(6,182,212,0.15));
+      border-radius: 20px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6rem; max-width: 280px;
+    }
+    .about-text p { color: var(--muted); font-size: 1rem; line-height: 1.9; margin-bottom: 1.2rem; }
+    .about-info { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 1.5rem; }
+    .info-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: var(--muted); }
+    .info-item i { color: var(--primary-light); width: 16px; }
+
+    /* ── Skills ── */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .skill-category {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .skill-category:hover { border-color: var(--primary); transform: translateY(-3px); }
+    .skill-cat-title {
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
+      color: var(--primary-light); padding: 0.3rem 0.75rem;
+      border-radius: 6px; font-size: 0.82rem; font-weight: 500;
+      font-family: var(--mono);
+    }
+
+    /* ── Experience ── */
+    #experience { background: var(--surface); }
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 8px; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--primary), var(--cyan), transparent);
+    }
+    .timeline-item { position: relative; margin-bottom: 2.5rem; }
+    .timeline-dot {
+      position: absolute; left: -2.45rem; top: 6px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--primary); border: 3px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    .timeline-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem 1.8rem;
+      transition: border-color 0.3s;
+    }
+    .timeline-card:hover { border-color: var(--primary); }
+    .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .timeline-role { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .timeline-company { font-size: 0.9rem; font-weight: 600; color: var(--primary-light); margin-bottom: 0.3rem; }
+    .timeline-date {
+      font-size: 0.78rem; font-family: var(--mono);
+      color: var(--faint); background: rgba(99,102,241,0.08);
+      border: 1px solid var(--border); padding: 0.2rem 0.7rem; border-radius: 20px;
+    }
+    .timeline-bullets { margin-top: 0.8rem; padding-left: 1.1rem; }
+    .timeline-bullets li { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.4rem; line-height: 1.7; }
+    .timeline-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+    .stack-tag {
+      background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.2);
+      color: var(--cyan); padding: 0.2rem 0.6rem; border-radius: 5px;
+      font-size: 0.75rem; font-family: var(--mono);
+    }
+
+    /* ── Projects ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.8rem;
+      display: flex; flex-direction: column;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .project-card:hover { border-color: var(--primary); transform: translateY(-4px); }
+    .project-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .project-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .project-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.7; flex: 1; margin-bottom: 1.2rem; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--primary-light); text-decoration: none;
+      font-size: 0.85rem; font-weight: 600;
+      transition: gap 0.2s;
+    }
+    .project-link:hover { gap: 0.7rem; }
+
+    /* ── Achievements ── */
+    #achievements { background: var(--surface); }
+    .achievements-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .achievement-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.8rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .achievement-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+    .achievement-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(6,182,212,0.2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .achievement-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .achievement-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+    /* ── Contact ── */
+    .contact-wrapper {
+      max-width: 640px; margin: 0 auto; text-align: center;
+    }
+    .contact-desc { color: var(--muted); font-size: 1rem; line-height: 1.8; margin-bottom: 2.5rem; }
+    .contact-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 2.5rem; }
+    .contact-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem 1.8rem;
+      display: flex; align-items: center; gap: 0.8rem;
+      text-decoration: none; color: var(--text);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .contact-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .contact-card i { color: var(--primary-light); font-size: 1.1rem; }
+    .contact-card span { font-size: 0.9rem; font-weight: 500; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      text-align: center; padding: 2rem;
+      color: var(--faint); font-size: 0.85rem;
+    }
+    footer span { color: var(--primary-light); }
+
+    /* ── Scroll reveal ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Mobile ── */
+    @media (max-width: 900px) {
+      .hero-stats { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-avatar { max-width: 160px; font-size: 4rem; }
+    }
+    @media (max-width: 680px) {
+      section { padding: 70px 6%; }
+      #home { padding: 100px 6% 60px; }
+      nav { padding: 0 6%; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; top: 64px; left: 0; right: 0;
+        background: var(--surface); border-bottom: 1px solid var(--border);
+        padding: 1.5rem 6%; gap: 1.2rem;
+      }
+      .timeline { padding-left: 1.5rem; }
+      .timeline-dot { left: -1.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav>
+  <div class="logo">&lt;TU /&gt;</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:upadhyaytanmay23@gmail.com" class="nav-cta">Hire Me</a>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">👋 Available for opportunities</div>
+    <h1 class="hero-name">Tanmay<br /><span>Upadhyay</span></h1>
+    <div class="hero-type">
+      <span id="typewriter"></span><span class="cursor"></span>
+    </div>
+    <p class="hero-desc">
+      Full Stack Engineer with 2+ years building scalable enterprise applications,
+      microservices, and cloud-native solutions across Java, Spring Boot, Angular, and React.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-secondary">Get in Touch</a>
+    </div>
+    <div class="hero-socials">
+      <a href="https://www.linkedin.com/in/tanmay-upadhyay-0b884b203/" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://github.com/tanmay0922" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+      <a href="https://leetcode.com/u/tanmay0922/" target="_blank" class="social-icon"><i class="fas fa-code"></i></a>
+      <a href="https://www.hackerrank.com/tanmay0922" target="_blank" class="social-icon"><i class="fab fa-hackerrank"></i></a>
+      <a href="mailto:upadhyaytanmay23@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card"><div class="stat-number">2+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat-card"><div class="stat-number">10+</div><div class="stat-label">Tech Stack</div></div>
+    <div class="stat-card"><div class="stat-number">100+</div><div class="stat-label">LeetCode Problems</div></div>
+    <div class="stat-card"><div class="stat-number">8.20</div><div class="stat-label">CGPA — BIT Mesra</div></div>
+  </div>
+</section>
+
+<!-- ── About ── -->
+<section id="about">
+  <div class="reveal">
+    <p class="section-tag">// who am i</p>
+    <h2 class="section-title">About <span>Me</span></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-avatar">👨‍💻</div>
+    <div class="about-text">
+      <p>I'm a Full Stack Software Engineer with expertise in building scalable enterprise applications and integration systems. I work across the full stack — designing REST APIs, backend microservices, frontend UIs, and cloud deployments.</p>
+      <p>I have hands-on experience in enterprise-scale integration, modernizing legacy systems into Spring Boot microservices, building full-stack web apps with Angular and React, and automating CI/CD pipelines on AWS.</p>
+      <p>When I'm not coding, I'm solving problems on LeetCode and continuously leveling up my skills.</p>
+      <div class="about-info">
+        <div class="info-item"><i class="fas fa-map-marker-alt"></i> Bangalore, India</div>
+        <div class="info-item"><i class="fas fa-graduation-cap"></i> BIT Mesra — 8.20 CGPA</div>
+        <div class="info-item"><i class="fas fa-envelope"></i> upadhyaytanmay23@gmail.com</div>
+        <div class="info-item"><i class="fas fa-phone"></i> +91 63072 14936</div>
+        <div class="info-item"><i class="fas fa-briefcase"></i> Open to opportunities</div>
+        <div class="info-item"><i class="fas fa-university"></i> ECE, Class of 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Skills ── -->
+<section id="skills">
+  <div class="reveal">
+    <p class="section-tag">// what i use</p>
+    <h2 class="section-title">Tech <span>Stack</span></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-category reveal">
+      <div class="skill-cat-title"><i class="fas fa-code"></i> Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Java 17</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">TypeScript</span>
+      </div>
+    </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title"><i class="fas fa-desktop"></i> Frontend</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Angular</span>
+        <span class="skill-tag">React.js</span>
+        <span class="skill-tag">HTML5</span>
+        <span class="skill-tag">CSS3</span>
+      </div>
+    </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title"><i class="fas fa-server"></i> Backend & Integration</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Spring Boot</span>
+        <span class="skill-tag">Apache Camel</span>
+        <span class="skill-tag">Flask</span>
+        <span class="skill-tag">Node.js</span>
+        <span class="skill-tag">Express.js</span>
+        <span class="skill-tag">IBM IIB</span>
+        <span class="skill-tag">REST APIs</span>
+      </div>
+    </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title"><i class="fas fa-database"></i> Databases</div>
+      <div class="skill-tags">
+        <span class="skill-tag">PostgreSQL</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">MongoDB</span>
+        <span class="skill-tag">SQLAlchemy</span>
+      </div>
+    </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title"><i class="fas fa-cloud"></i> Cloud & DevOps</div>
+      <div class="skill-tags">
+        <span class="skill-tag">AWS</span>
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">GitHub Actions</span>
+        <span class="skill-tag">CI/CD</span>
+      </div>
+    </div>
+    <div class="skill-category reveal">
+      <div class="skill-cat-title"><i class="fas fa-flask"></i> Testing & Tools</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Pytest</span>
+        <span class="skill-tag">JUnit</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">GitHub</span>
+        <span class="skill-tag">VS Code</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Experience ── -->
+<section id="experience">
+  <div class="reveal">
+    <p class="section-tag">// where i've worked</p>
+    <h2 class="section-title">Work <span>Experience</span></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="timeline">
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-role">Full Stack Engineer II</div>
+            <div class="timeline-company">BDIPLUS</div>
+          </div>
+          <span class="timeline-date">Nov 2025 — Present · Bangalore</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Leading modernization of <strong>1,200+ legacy enterprise services</strong>, re-architecting IBM IIB message flows into Java 17 + Spring Boot microservices.</li>
+          <li>Designed modular Apache Camel–based integration packages, improving maintainability and independent deployability.</li>
+          <li>Delivered end-to-end data transformation pipelines ensuring functional parity between legacy and modernized services.</li>
+          <li>Collaborated with US-based stakeholders to align architecture with enterprise integration standards.</li>
+        </ul>
+        <div class="timeline-stack">
+          <span class="stack-tag">Java 17</span>
+          <span class="stack-tag">Spring Boot</span>
+          <span class="stack-tag">Apache Camel</span>
+          <span class="stack-tag">IBM IIB</span>
+          <span class="stack-tag">REST APIs</span>
+          <span class="stack-tag">Git</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-role">Software Engineer</div>
+            <div class="timeline-company">Integrichain</div>
+          </div>
+          <span class="timeline-date">Aug 2024 — Oct 2025 · Pune</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Built full-stack web applications using Angular and Flask, reducing page load time by 30%.</li>
+          <li>Designed modular PostgreSQL schemas supporting scalable workflows across 5+ application modules.</li>
+          <li>Automated QA pipeline using Pytest, reducing manual testing overhead by 60% and production defects by 40%.</li>
+          <li>Configured CI/CD pipelines with GitHub Actions and Docker, enabling zero-downtime deployments on AWS.</li>
+        </ul>
+        <div class="timeline-stack">
+          <span class="stack-tag">Angular</span>
+          <span class="stack-tag">Flask</span>
+          <span class="stack-tag">Python</span>
+          <span class="stack-tag">PostgreSQL</span>
+          <span class="stack-tag">Docker</span>
+          <span class="stack-tag">AWS</span>
+          <span class="stack-tag">GitHub Actions</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <div class="timeline-header">
+          <div>
+            <div class="timeline-role">Full Stack Engineer</div>
+            <div class="timeline-company">TalentServe</div>
+          </div>
+          <span class="timeline-date">Mar 2024 — Aug 2024 · Mumbai</span>
+        </div>
+        <ul class="timeline-bullets">
+          <li>Developed and shipped 3 core product features using MERN stack, meeting all delivery milestones on schedule.</li>
+          <li>Built reusable React.js component library, reducing frontend development time by 25% across the team.</li>
+          <li>Set up CI/CD automation scripts that reduced deployment time from 45 to 12 minutes.</li>
+        </ul>
+        <div class="timeline-stack">
+          <span class="stack-tag">MongoDB</span>
+          <span class="stack-tag">Express.js</span>
+          <span class="stack-tag">React.js</span>
+          <span class="stack-tag">Node.js</span>
+          <span class="stack-tag">CI/CD</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Projects ── -->
+<section id="projects">
+  <div class="reveal">
+    <p class="section-tag">// what i've built</p>
+    <h2 class="section-title">Featured <span>Projects</span></h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-icon">📁</div>
+      <div class="project-title">File Upload Microservice</div>
+      <div class="project-desc">Secure file upload service with JWT authentication, async processing via BullMQ, and PostgreSQL metadata store. Production-grade architecture with queue-based processing.</div>
+      <div class="project-stack">
+        <span class="stack-tag">Node.js</span>
+        <span class="stack-tag">PostgreSQL</span>
+        <span class="stack-tag">BullMQ</span>
+        <span class="stack-tag">JWT</span>
+      </div>
+      <a href="https://github.com/tanmay0922/file-upload-microservice" target="_blank" class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-icon">🔐</div>
+      <div class="project-title">Secure Auth System</div>
+      <div class="project-desc">Full user authentication system with role-based access control, session management, and secure password handling. Built with security best practices throughout.</div>
+      <div class="project-stack">
+        <span class="stack-tag">JavaScript</span>
+        <span class="stack-tag">Node.js</span>
+        <span class="stack-tag">JWT</span>
+      </div>
+      <a href="https://github.com/tanmay0922/secure-auth-system" target="_blank" class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-icon">🧠</div>
+      <div class="project-title">Human Activity Recognition</div>
+      <div class="project-desc">LSTM-based RNN achieving 91% accuracy classifying 6 human activities from smartphone accelerometer and gyroscope sensor data. Time-series deep learning model.</div>
+      <div class="project-stack">
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">TensorFlow</span>
+        <span class="stack-tag">NumPy</span>
+        <span class="stack-tag">Scikit-learn</span>
+      </div>
+      <a href="https://github.com/tanmay0922/Human-activity-recognition" target="_blank" class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-icon">💻</div>
+      <div class="project-title">LeetCode Java Solutions</div>
+      <div class="project-desc">100+ curated and well-documented LeetCode solutions in Java covering data structures and algorithms. Consistently maintained with optimal time and space complexity.</div>
+      <div class="project-stack">
+        <span class="stack-tag">Java</span>
+        <span class="stack-tag">DSA</span>
+        <span class="stack-tag">Algorithms</span>
+      </div>
+      <a href="https://github.com/tanmay0922/Leetcode-Java-Solutions" target="_blank" class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-icon">🌐</div>
+      <div class="project-title">LinguaBot — Language Extension</div>
+      <div class="project-desc">Chrome extension for multilingual AI chat with automatic language detection across 25+ languages. Features voice input, floating text translator, right-click context menu translation, and full webpage translation — powered by Llama 3.3 70B via Groq API.</div>
+      <div class="project-stack">
+        <span class="stack-tag">JavaScript</span>
+        <span class="stack-tag">Chrome Manifest V3</span>
+        <span class="stack-tag">Groq API</span>
+        <span class="stack-tag">Llama 3.3 70B</span>
+        <span class="stack-tag">Web Speech API</span>
+      </div>
+      <a href="https://github.com/tanmay0922/linguabot-extension" target="_blank" class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-icon">🤖</div>
+      <div class="project-title">Smart File QA</div>
+      <div class="project-desc">Full-stack AI application that lets users upload documents (PDF, DOCX, TXT) and query their content using AI. Generates formatted PDF reports from answers and delivers them via email. Built with React frontend and FastAPI backend.</div>
+      <div class="project-stack">
+        <span class="stack-tag">React.js</span>
+        <span class="stack-tag">FastAPI</span>
+        <span class="stack-tag">Python</span>
+        <span class="stack-tag">OpenAI API</span>
+        <span class="stack-tag">ReportLab</span>
+        <span class="stack-tag">SQLite</span>
+      </div>
+      <a href="https://github.com/tanmay0922/smart-file-qa" target="_blank" class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-icon">🔍</div>
+      <div class="project-title">Website Content Search</div>
+      <div class="project-desc">Semantic search engine for web content — submit any URL and query to find relevant sections using NLP embeddings. Chunks content into 500-token segments, generates embeddings via SentenceTransformers, and ranks results by cosine similarity.</div>
+      <div class="project-stack">
+        <span class="stack-tag">Next.js</span>
+        <span class="stack-tag">FastAPI</span>
+        <span class="stack-tag">SentenceTransformers</span>
+        <span class="stack-tag">BeautifulSoup</span>
+        <span class="stack-tag">TailwindCSS</span>
+      </div>
+      <a href="https://github.com/tanmay0922/website-content-search" target="_blank" class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-icon">🎭</div>
+      <div class="project-title">Live Show Booking System</div>
+      <div class="project-desc">Backend Java application for managing live show ticket reservations with slot management, automatic waitlisting, and cancellations. Built with clean OOP principles — modular services, repositories, and models following industry-standard architecture.</div>
+      <div class="project-stack">
+        <span class="stack-tag">Java 17</span>
+        <span class="stack-tag">Maven</span>
+        <span class="stack-tag">OOP</span>
+        <span class="stack-tag">Clean Architecture</span>
+      </div>
+      <a href="https://github.com/tanmay0922/live-show-booking-system" target="_blank" class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Achievements ── -->
+<section id="achievements">
+  <div class="reveal">
+    <p class="section-tag">// recognition</p>
+    <h2 class="section-title">Achievements <span>&</span> Highlights</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="achievements-grid">
+    <div class="achievement-card reveal">
+      <div class="achievement-icon">🏆</div>
+      <div>
+        <div class="achievement-title">Google Cloud Challenge — Winner</div>
+        <div class="achievement-desc">Won the Google Cloud Challenge, completing the entire challenge in under 1 week, demonstrating rapid learning and cloud proficiency.</div>
+      </div>
+    </div>
+    <div class="achievement-card reveal">
+      <div class="achievement-icon">🔥</div>
+      <div>
+        <div class="achievement-title">100+ Days on LeetCode</div>
+        <div class="achievement-desc">Maintained 100+ consecutive days of coding on LeetCode, solving problems across data structures, algorithms, and system design.</div>
+      </div>
+    </div>
+    <div class="achievement-card reveal">
+      <div class="achievement-icon">⭐</div>
+      <div>
+        <div class="achievement-title">HackerRank — Gold & Bronze Badges</div>
+        <div class="achievement-desc">Earned Gold Badge in Java and Bronze Badge in Problem Solving on HackerRank, demonstrating strong language proficiency and algorithmic thinking.</div>
+      </div>
+    </div>
+    <div class="achievement-card reveal">
+      <div class="achievement-icon">🎓</div>
+      <div>
+        <div class="achievement-title">BIT Mesra — 8.20 CGPA</div>
+        <div class="achievement-desc">Graduated with B.Tech in Electronics & Communication Engineering from one of India's top engineering institutes with a strong academic record.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section id="contact">
+  <div class="contact-wrapper">
+    <div class="reveal">
+      <p class="section-tag">// let's talk</p>
+      <h2 class="section-title">Get In <span>Touch</span></h2>
+      <div class="section-line" style="margin: 0 auto 2rem;"></div>
+    </div>
+    <p class="contact-desc reveal">
+      I'm always open to new opportunities, collaborations, or just a good tech conversation.
+      Feel free to reach out through any of the channels below.
+    </p>
+    <div class="contact-cards reveal">
+      <a href="mailto:upadhyaytanmay23@gmail.com" class="contact-card">
+        <i class="fas fa-envelope"></i>
+        <span>upadhyaytanmay23@gmail.com</span>
+      </a>
+      <a href="https://www.linkedin.com/in/tanmay-upadhyay-0b884b203/" target="_blank" class="contact-card">
+        <i class="fab fa-linkedin-in"></i>
+        <span>LinkedIn</span>
+      </a>
+      <a href="https://github.com/tanmay0922" target="_blank" class="contact-card">
+        <i class="fab fa-github"></i>
+        <span>GitHub</span>
+      </a>
+      <a href="tel:+916307214936" class="contact-card">
+        <i class="fas fa-phone"></i>
+        <span>+91 63072 14936</span>
+      </a>
+    </div>
+    <div class="reveal">
+      <a href="mailto:upadhyaytanmay23@gmail.com" class="btn-primary" style="display:inline-block;">
+        Say Hello 👋
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <p>Designed & built by <span>Tanmay Upadhyay</span> · 2025</p>
+</footer>
+
+<script>
+  // ── Typewriter ──
+  const roles = [
+    "Full Stack Engineer",
+    "Backend Developer",
+    "Enterprise Integration Specialist",
+    "Java & Spring Boot Developer",
+    "Problem Solver"
+  ];
+  let ri = 0, ci = 0, deleting = false;
+  const el = document.getElementById("typewriter");
+
+  function type() {
+    const current = roles[ri];
+    el.textContent = deleting ? current.slice(0, ci--) : current.slice(0, ci++);
+    if (!deleting && ci === current.length + 1) {
+      deleting = true; setTimeout(type, 1400); return;
+    }
+    if (deleting && ci === 0) {
+      deleting = false; ri = (ri + 1) % roles.length;
+    }
+    setTimeout(type, deleting ? 45 : 90);
+  }
+  type();
+
+  // ── Hamburger ──
+  const hamburger = document.getElementById("hamburger");
+  const navLinks  = document.getElementById("navLinks");
+  hamburger.addEventListener("click", () => navLinks.classList.toggle("open"));
+  navLinks.querySelectorAll("a").forEach(a => a.addEventListener("click", () => navLinks.classList.remove("open")));
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+  // ── Active nav highlight ──
+  const sections = document.querySelectorAll("section[id]");
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY + 80;
+    sections.forEach(s => {
+      const link = document.querySelector(`.nav-links a[href="#${s.id}"]`);
+      if (link) link.style.color = (y >= s.offsetTop && y < s.offsetTop + s.offsetHeight)
+        ? "var(--primary-light)" : "";
+    });
+  });
+</script>
+</body>
+</html>
