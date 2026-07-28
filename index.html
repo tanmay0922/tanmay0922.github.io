@@ -325,6 +325,74 @@
     .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
+    /* ── Scroll progress bar ── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--cyan));
+      z-index: 200; transition: width 0.1s linear;
+      box-shadow: 0 0 10px rgba(99,102,241,0.6);
+    }
+
+    /* ── Mouse spotlight ── */
+    #spotlight {
+      position: fixed; top: 0; left: 0; width: 500px; height: 500px;
+      border-radius: 50%; pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 65%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s; opacity: 0;
+    }
+
+    /* ── Floating gradient orbs (hero) ── */
+    .orb {
+      position: absolute; border-radius: 50%; filter: blur(60px);
+      opacity: 0.45; z-index: 0; pointer-events: none;
+    }
+    .orb-1 { width: 340px; height: 340px; background: rgba(99,102,241,0.35); top: 10%; left: -60px; animation: float1 14s ease-in-out infinite; }
+    .orb-2 { width: 300px; height: 300px; background: rgba(6,182,212,0.30); bottom: 5%; right: 8%; animation: float2 18s ease-in-out infinite; }
+    @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px, 50px); } }
+    @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px, -40px); } }
+
+    /* ── 3D tilt cards ── */
+    .tilt { transform-style: preserve-3d; will-change: transform; }
+    .tilt > * { transform: translateZ(20px); }
+
+    /* ── Card sheen on hover ── */
+    .stat-card, .skill-category, .timeline-card, .project-card, .achievement-card, .contact-card {
+      position: relative; overflow: hidden;
+    }
+    .stat-card::after, .skill-category::after, .project-card::after, .achievement-card::after {
+      content: ''; position: absolute; top: 0; left: -75%;
+      width: 50%; height: 100%; z-index: 2; pointer-events: none;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.08), transparent);
+      transform: skewX(-20deg); transition: left 0.6s ease;
+    }
+    .stat-card:hover::after, .skill-category:hover::after, .project-card:hover::after, .achievement-card:hover::after { left: 130%; }
+
+    /* ── Back to top ── */
+    #back-to-top {
+      position: fixed; bottom: 28px; right: 28px; z-index: 150;
+      width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer;
+      background: linear-gradient(135deg, var(--primary), #4f46e5); color: #fff;
+      font-size: 1rem; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+      opacity: 0; visibility: hidden; transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+    }
+    #back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    #back-to-top:hover { transform: translateY(-3px) scale(1.05); }
+
+    /* ── Skill tag hover ── */
+    .skill-tag { transition: transform 0.2s, background 0.2s, color 0.2s; cursor: default; }
+    .skill-tag:hover { transform: translateY(-2px); background: rgba(99,102,241,0.25); color: #fff; }
+
+    /* ── Magnetic buttons ── */
+    .btn-primary, .btn-secondary { will-change: transform; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb, #progress-bar { animation: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
     /* ── Mobile ── */
     @media (max-width: 900px) {
       .hero-stats { display: none; }
@@ -350,6 +418,9 @@
 </head>
 <body>
 
+<div id="progress-bar"></div>
+<div id="spotlight"></div>
+
 <!-- ── Navbar ── -->
 <nav>
   <div class="logo">&lt;TU /&gt;</div>
@@ -369,6 +440,8 @@
 <!-- ── Hero ── -->
 <section id="home">
   <div class="hero-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
   <div class="hero-content">
     <div class="hero-tag">👋 Available for opportunities</div>
     <h1 class="hero-name">Tanmay<br /><span>Upadhyay</span></h1>
@@ -392,10 +465,10 @@
     </div>
   </div>
   <div class="hero-stats">
-    <div class="stat-card"><div class="stat-number">2+</div><div class="stat-label">Years Experience</div></div>
-    <div class="stat-card"><div class="stat-number">10+</div><div class="stat-label">Tech Stack</div></div>
-    <div class="stat-card"><div class="stat-number">100+</div><div class="stat-label">LeetCode Problems</div></div>
-    <div class="stat-card"><div class="stat-number">8.20</div><div class="stat-label">CGPA — BIT Mesra</div></div>
+    <div class="stat-card"><div class="stat-number" data-target="2" data-suffix="+">0</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat-card"><div class="stat-number" data-target="10" data-suffix="+">0</div><div class="stat-label">Tech Stack</div></div>
+    <div class="stat-card"><div class="stat-number" data-target="100" data-suffix="+">0</div><div class="stat-label">LeetCode Problems</div></div>
+    <div class="stat-card"><div class="stat-number" data-target="8.20" data-decimals="2">0</div><div class="stat-label">CGPA — BIT Mesra</div></div>
   </div>
 </section>
 
@@ -785,6 +858,8 @@
   <p>Designed & built by <span>Tanmay Upadhyay</span> · 2025</p>
 </footer>
 
+<button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+
 <script>
   // ── Typewriter ──
   const roles = [
@@ -823,15 +898,94 @@
   );
   document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
 
-  // ── Active nav highlight ──
+  // ── Active nav highlight + scroll progress + back-to-top ──
   const sections = document.querySelectorAll("section[id]");
-  window.addEventListener("scroll", () => {
+  const progressBar = document.getElementById("progress-bar");
+  const backToTop = document.getElementById("back-to-top");
+
+  function onScroll() {
     const y = window.scrollY + 80;
     sections.forEach(s => {
       const link = document.querySelector(`.nav-links a[href="#${s.id}"]`);
       if (link) link.style.color = (y >= s.offsetTop && y < s.offsetTop + s.offsetHeight)
         ? "var(--primary-light)" : "";
     });
+    // progress
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + "%";
+    // back to top
+    backToTop.classList.toggle("show", window.scrollY > 500);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+  // ── Mouse spotlight (desktop only) ──
+  const spotlight = document.getElementById("spotlight");
+  const fine = window.matchMedia("(pointer: fine)").matches;
+  if (fine) {
+    window.addEventListener("mousemove", e => {
+      spotlight.style.opacity = "1";
+      spotlight.style.left = e.clientX + "px";
+      spotlight.style.top  = e.clientY + "px";
+    });
+    document.addEventListener("mouseleave", () => spotlight.style.opacity = "0");
+  }
+
+  // ── Count-up stat numbers ──
+  function animateCount(el) {
+    const target   = parseFloat(el.dataset.target);
+    const decimals = parseInt(el.dataset.decimals || "0", 10);
+    const suffix   = el.dataset.suffix || "";
+    const duration = 1400;
+    const start    = performance.now();
+    function step(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      el.textContent = (target * eased).toFixed(decimals) + (p === 1 ? suffix : "");
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  const statObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { animateCount(e.target); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll(".stat-number[data-target]").forEach(el => statObserver.observe(el));
+
+  // ── 3D tilt on cards (desktop only) ──
+  if (fine) {
+    const tiltCards = document.querySelectorAll(".project-card, .skill-category, .achievement-card, .timeline-card, .contact-card");
+    tiltCards.forEach(card => {
+      card.style.transition = "transform 0.15s ease, border-color 0.3s";
+      card.addEventListener("mousemove", e => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(700px) rotateX(${(-py * 6).toFixed(2)}deg) rotateY(${(px * 6).toFixed(2)}deg) translateY(-4px)`;
+      });
+      card.addEventListener("mouseleave", () => { card.style.transform = ""; });
+    });
+  }
+
+  // ── Magnetic buttons (desktop only) ──
+  if (fine) {
+    document.querySelectorAll(".btn-primary, .btn-secondary").forEach(btn => {
+      btn.addEventListener("mousemove", e => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        btn.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+      });
+      btn.addEventListener("mouseleave", () => { btn.style.transform = ""; });
+    });
+  }
+
+  // ── Staggered reveal delay ──
+  document.querySelectorAll(".skills-grid .reveal, .projects-grid .reveal, .achievements-grid .reveal").forEach((el, i) => {
+    el.style.transitionDelay = (i % 4 * 0.08) + "s";
   });
 </script>
 </body>
