@@ -732,6 +732,21 @@
   <div class="projects-grid">
 
     <div class="project-card reveal">
+      <div class="project-icon">⚙️</div>
+      <div class="project-title">PostgreSQL Job Queue</div>
+      <div class="project-desc">Durable background job queue that uses PostgreSQL as the broker. Workers claim jobs with FOR UPDATE SKIP LOCKED so no job is processed twice at once, failed jobs retry with exponential backoff and jitter before moving to a dead-letter state, and lease heartbeats recover jobs from crashed workers. REST API with idempotent enqueue; tested against a real PostgreSQL.</div>
+      <div class="project-stack">
+        <span class="stack-tag">Java 21</span>
+        <span class="stack-tag">Spring Boot 4</span>
+        <span class="stack-tag">PostgreSQL</span>
+        <span class="stack-tag">Flyway</span>
+        <span class="stack-tag">Docker</span>
+        <span class="stack-tag">GitHub Actions</span>
+      </div>
+      <a href="https://github.com/tanmay0922/postgres-job-queue" target="_blank" class="project-link">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    <div class="project-card reveal">
       <div class="project-icon">🚦</div>
       <div class="project-title">Token Bucket Rate Limiter</div>
       <div class="project-desc">Thread-safe, in-memory token bucket rate limiter built with Spring Boot 3 and Java 17. Every client gets its own lazily-refilled bucket; over-limit requests are rejected with HTTP 429 and standard rate-limit headers, with automatic idle eviction. Ships with CI and CodeQL pipelines.</div>
